@@ -14,6 +14,7 @@ import { PublicRoute } from './PublicRoute';
 
 import { JournalScreen } from '../components/journal/JournalScreen';
 import { login } from '../actions/auth';
+import {startLoadingNotes } from '../actions/notes';
 
 // Contiene las rutas principales
 export const AppRouter = () => {
@@ -28,12 +29,13 @@ export const AppRouter = () => {
 
     useEffect(() => {
         
-        firebase.auth().onAuthStateChanged( (user) => {
+        firebase.auth().onAuthStateChanged( async (user) => {
 
             if( user?.uid ) {   // si el objeto user tiene algo, entonces pregunta si existe el uid
                 dispatch( login( user.uid, user.displayName ) );
-
                 setIsLoggedIn(true);
+
+                dispatch(startLoadingNotes( user.uid ));
 
             } else {
                 setIsLoggedIn(false);

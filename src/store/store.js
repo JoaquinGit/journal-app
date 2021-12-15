@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { authReducer } from '../reducers/authReducer';
 import thunk from 'redux-thunk';
 import { uiReducer } from '../reducers/uiReducer';
+import { notesReducer } from '../reducers/notesReducers';
 
 // React Dev Tools: https://github.com/zalmoxisus/redux-devtools-extension#usage. Config para poder aplicar varios middlewares
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
@@ -14,7 +15,8 @@ const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOO
 // paso los reducers por aquí para luego enviar al store
 const reducers = combineReducers({
     auth: authReducer,
-    ui: uiReducer ///****** AAAAA */
+    ui: uiReducer,
+    notes: notesReducer
 });
 
 // solo recibe un reducer
