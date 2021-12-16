@@ -61,6 +61,28 @@ export const setNotes = ( notes ) => ({
 });
 
 
+export const startSaveNote = ( note ) => {
+    return async( dispatch, getState ) => {
+
+        const { uid } = getState().auth;
+
+        if ( !note.url ){
+            delete note.url;
+        }
+
+        // clono para no modificar note original accidentalmente
+        const noteToFirestore = { ...note };
+        delete noteToFirestore.id;
+
+        await db.doc(`${ uid }/journal/notes/${ note.id }`).update( noteToFirestore ); // note.id del argumento
+
+       /*  dispatch( refreshNote( note.id, noteToFirestore ) );
+        Swal.fire('Saved', note.title, 'success'); */
+    }
+}
+
+
+
 /*
 export const startSaveNote = ( note ) => {
     return async( dispatch, getState ) => {
@@ -71,10 +93,11 @@ export const startSaveNote = ( note ) => {
             delete note.url;
         }
 
+        // clono para no modificar note original accidentalmente
         const noteToFirestore = { ...note };
         delete noteToFirestore.id;
 
-        await db.doc(`${ uid }/journal/notes/${ note.id }`).update( noteToFirestore );
+        await db.doc(`${ uid }/journal/notes/${ note.id }`).update( noteToFirestore ); // note.id del argumento
 
         dispatch( refreshNote( note.id, noteToFirestore ) );
         Swal.fire('Saved', note.title, 'success');
