@@ -1,12 +1,14 @@
+// ******************** Acciones asíncrones se nombran con "start" ****************
+
 import Swal from 'sweetalert2';
 
 import { db } from '../firebase/firebase-config';
 
 import { types } from '../types/types';
 import { loadNotes } from '../helpers/loadNotes';
-//import { fileUpload } from '../helpers/fileUpload';
+import { fileUpload } from '../helpers/fileUpload';
 
-// Guardar nota
+// Guardar nota nueva
 export const startNewNote = () => {
     return async( dispatch, getState ) => {
 
@@ -22,7 +24,7 @@ export const startNewNote = () => {
         //console.log(doc);
 
         dispatch( activeNote( doc.id, newNote ) );
-        //dispatch( addNewNote( doc.id, newNote ) );
+        dispatch( addNewNote( doc.id, newNote ) );
 
     }
 }
@@ -36,16 +38,17 @@ export const startNewNote = () => {
     }
 });
 
-/*
+// Refresca lista de notas agregando las nuevas entradas
 export const addNewNote = ( id, note ) => ({
     type: types.notesAddNew,
     payload: {
-        id, ...note
+        id,
+        ...note
     }
 })
-*/
 
-// Trae las notas de firestore y dispara la accion
+
+// Trae las notas de firestore
 export const startLoadingNotes = ( uid ) => {
     return async( dispatch ) => {
         
@@ -60,7 +63,7 @@ export const setNotes = ( notes ) => ({
     payload: notes
 });
 
-
+// Actualiza nota actual
 export const startSaveNote = ( note ) => {
     return async( dispatch, getState ) => {
 
@@ -76,30 +79,7 @@ export const startSaveNote = ( note ) => {
 
         await db.doc(`${ uid }/journal/notes/${ note.id }`).update( noteToFirestore ); // note.id del argumento
 
-       /*  dispatch( refreshNote( note.id, noteToFirestore ) );
-        Swal.fire('Saved', note.title, 'success'); */
-    }
-}
-
-
-
-/*
-export const startSaveNote = ( note ) => {
-    return async( dispatch, getState ) => {
-
-        const { uid } = getState().auth;
-
-        if ( !note.url ){
-            delete note.url;
-        }
-
-        // clono para no modificar note original accidentalmente
-        const noteToFirestore = { ...note };
-        delete noteToFirestore.id;
-
-        await db.doc(`${ uid }/journal/notes/${ note.id }`).update( noteToFirestore ); // note.id del argumento
-
-        dispatch( refreshNote( note.id, noteToFirestore ) );
+        dispatch( refreshNote( note.id, noteToFirestore ) ); // Acción para actualizar únicamente la nota modificada, traída del store. Si usara startLoadingNotes() actualizaría todas las notas innecesariamente.
         Swal.fire('Saved', note.title, 'success');
     }
 }
@@ -115,7 +95,7 @@ export const refreshNote = ( id, note ) => ({
     }
 });
 
-
+// Subir foto a Claudinary
 export const startUploading = ( file ) => {
     return async( dispatch, getState ) => {
 
@@ -125,7 +105,8 @@ export const startUploading = ( file ) => {
             title: 'Uploading...',
             text: 'Please wait...',
             allowOutsideClick: false,
-            onBeforeOpen: () => {
+            showConfirmButton: false,
+            willOpen: () => {
                 Swal.showLoading();
             }
         });
@@ -135,19 +116,18 @@ export const startUploading = ( file ) => {
 
         dispatch( startSaveNote( activeNote ) )
         
-
         Swal.close();
     }
 }
 
-
+// Borra nota
 export const startDeleting = ( id ) => {
     return async( dispatch, getState ) => {
          
         const uid = getState().auth.uid;
-        await db.doc(`${ uid }/journal/notes/${ id }`).delete();
+        await db.doc(`${ uid }/journal/notes/${ id }`).delete(); // borro nota de firestore
 
-        dispatch( deleteNote(id) );
+        dispatch( deleteNote(id) ); // borro nota del store
 
     }
 }
@@ -161,4 +141,3 @@ export const deleteNote = (id) => ({
 export const noteLogout = () => ({
     type: types.notesLogoutCleaning
 });
- */
