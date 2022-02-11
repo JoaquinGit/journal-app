@@ -10,27 +10,27 @@ import { fileUpload } from '../helpers/fileUpload';
 
 // Guardar nota nueva
 export const startNewNote = () => {
-    return async( dispatch, getState ) => {
+    return async (dispatch, getState) => {
 
         const { uid } = getState().auth;
-        
+
         const newNote = {
             title: '',
             body: '',
             date: new Date().getTime()
         }
 
-        const doc = await db.collection(`${ uid }/journal/notes`).add( newNote );
+        const doc = await db.collection(`${uid}/journal/notes`).add(newNote);
         //console.log(doc);
 
-        dispatch( activeNote( doc.id, newNote ) );
-        dispatch( addNewNote( doc.id, newNote ) );
+        dispatch(activeNote(doc.id, newNote));
+        dispatch(addNewNote(doc.id, newNote));
 
     }
 }
 
 // Activa pantalla de entrada de nota
-    export const activeNote = ( id, note ) => ({
+export const activeNote = (id, note) => ({
     type: types.notesActive,
     payload: {
         id,
@@ -39,7 +39,7 @@ export const startNewNote = () => {
 });
 
 // Refresca lista de notas agregando las nuevas entradas
-export const addNewNote = ( id, note ) => ({
+export const addNewNote = (id, note) => ({
     type: types.notesAddNew,
     payload: {
         id,
@@ -49,27 +49,26 @@ export const addNewNote = ( id, note ) => ({
 
 
 // Trae las notas de firestore
-export const startLoadingNotes = ( uid ) => {
-    return async( dispatch ) => {
-        
-        const notes = await loadNotes( uid );
-        dispatch( setNotes( notes ) );
+export const startLoadingNotes = (uid) => {
+    return async (dispatch) => {
 
+        const notes = await loadNotes(uid);
+        dispatch(setNotes(notes));
     }
 }
 
-export const setNotes = ( notes ) => ({
+export const setNotes = (notes) => ({
     type: types.notesLoad,
     payload: notes
 });
 
 // Actualiza nota actual
-export const startSaveNote = ( note ) => {
-    return async( dispatch, getState ) => {
+export const startSaveNote = (note) => {
+    return async (dispatch, getState) => {
 
         const { uid } = getState().auth;
 
-        if ( !note.url ){
+        if (!note.url) {
             delete note.url;
         }
 
@@ -77,14 +76,14 @@ export const startSaveNote = ( note ) => {
         const noteToFirestore = { ...note };
         delete noteToFirestore.id;
 
-        await db.doc(`${ uid }/journal/notes/${ note.id }`).update( noteToFirestore ); // note.id del argumento
+        await db.doc(`${uid}/journal/notes/${note.id}`).update(noteToFirestore); // note.id del argumento
 
-        dispatch( refreshNote( note.id, noteToFirestore ) ); // Acción para actualizar únicamente la nota modificada, traída del store. Si usara startLoadingNotes() actualizaría todas las notas innecesariamente.
+        dispatch(refreshNote(note.id, noteToFirestore)); // Acción para actualizar únicamente la nota modificada, traída del store. Si usara startLoadingNotes() actualizaría todas las notas innecesariamente.
         Swal.fire('Saved', note.title, 'success');
     }
 }
 
-export const refreshNote = ( id, note ) => ({
+export const refreshNote = (id, note) => ({
     type: types.notesUpdated,
     payload: {
         id,
@@ -96,10 +95,10 @@ export const refreshNote = ( id, note ) => ({
 });
 
 // Subir foto a Claudinary
-export const startUploading = ( file ) => {
-    return async( dispatch, getState ) => {
+export const startUploading = (file) => {
+    return async (dispatch, getState) => {
 
-        const { active:activeNote } = getState().notes;
+        const { active: activeNote } = getState().notes;
 
         Swal.fire({
             title: 'Uploading...',
@@ -111,23 +110,23 @@ export const startUploading = ( file ) => {
             }
         });
 
-        const fileUrl = await fileUpload( file );
+        const fileUrl = await fileUpload(file);
         activeNote.url = fileUrl;
 
-        dispatch( startSaveNote( activeNote ) )
-        
+        dispatch(startSaveNote(activeNote))
+
         Swal.close();
     }
 }
 
 // Borra nota
-export const startDeleting = ( id ) => {
-    return async( dispatch, getState ) => {
-         
-        const uid = getState().auth.uid;
-        await db.doc(`${ uid }/journal/notes/${ id }`).delete(); // borro nota de firestore
+export const startDeleting = (id) => {
+    return async (dispatch, getState) => {
 
-        dispatch( deleteNote(id) ); // borro nota del store
+        const uid = getState().auth.uid;
+        await db.doc(`${uid}/journal/notes/${id}`).delete(); // borro nota de firestore
+
+        dispatch(deleteNote(id)); // borro nota del store
 
     }
 }

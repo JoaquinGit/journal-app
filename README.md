@@ -1,40 +1,67 @@
-# Getting Started with Create React App
+# journal-app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación para registro de sucesos de la vida. Permite registrar notas indicando fecha, título, un texto y una foto, persistiendo los datos ingresados en Firestore y las imagenes en la nube de Claudinary. Tiene autenticación de usuario, tanto con email y password, como con cuenta de Google.
 
-## Available Scripts
+Incluye:
 
-In the project directory, you can run:
+* Redux
+* Acciones asíncronas con Thunk
+* SASS
+* Firestore
+* Autenticación con email y password, y con cuenta de Google
+* Claudinary para guardar imágenes en la nube
+* Alertas de sweetalert2
+* Fontawesome para iconos
+* Animaciones de Animate.css
 
-### `npm start`
+## Demo 🔗
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[ONLINE VERSION]()
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Uso de la demo online
 
-### `npm test`
+1. Registro con email y contraseña. O bien realizar ingreso con cuenta de gmail en paso 2.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![](screenshots/1-registro.JPG)
 
-### `npm run build`
+2. Login con email y contraseña, o cuenta de gmail.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![](screenshots/2-login.JPG)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Pantalla principal. Agregar nueva nota haciendo click en "New entry". 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![](screenshots/3-pantalla-principal.JPG)
 
-### `npm run eject`
+4. Click en "Save" para guardar nota. También se puede cargar una imagen haciendo click en "Picture". Luego de subida la imagen, se guarda automáticamente la nota.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![](screenshots/4-registro-nota.JPG)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+5. Click sobre una nota para editarla. También se puede borrar la nota con el botón "Delete" rojo que se encuentra en la parte inferior de la pantalla.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![](screenshots/5-edicion-nota.JPG)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Tecnologías utilizadas 🛠️
+
+Este proyecto fue inicializado con [Create React App](https://github.com/facebook/create-react-app).
+
+- HTML5
+- CSS
+- SASS
+- React.js
+- Firestore
+
+## Instalación local 🔧
+
+1. Clonar repositorio
+    ```bash
+    git clone
+    ```
+2. Instalar el proyecto
+    ```bash
+    npm install
+    ```
+3. Correr
+    ```bash
+    npm start
+    ```
+

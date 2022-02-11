@@ -8,7 +8,7 @@ import { notesReducer } from '../reducers/notesReducers';
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
 
-// store solo recibe un reducer, por eso no es obligatorio usar combine reducers.
+// Si store solo recibe un reducer, no es obligatorio usar combine reducers.
 // Igualmente conviene usar siempre combineReducers (aunque tenga un sólo reducer) para no tener que refactorizar luego.
 
 
